@@ -4,6 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Main from './pages/Main';
 import Profile from './pages/Profile';
 import Setup from './pages/Setup';
+import gitpage from './screens/gitpage';
+import signupscreen from './screens/signupscreen';
 
 const { Navigator, Screen } = createStackNavigator();
 
@@ -39,7 +41,7 @@ export default function Routes({ initialRouteName }: RoutesProps) {
                 />
                 <Screen
                     name="Profile"
-                    component={Profile}
+                    component={gitpage}
                     options={{
                         title: 'Github Profile',
                     }}

@@ -9,3 +9,5 @@ export default interface User {
     bio: string | null;
     coordinates: LatLng;
 }
+
+export type userprofile ={githubUsername: string}
