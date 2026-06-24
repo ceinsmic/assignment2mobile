@@ -46,16 +46,18 @@ export default function Main({ navigation }: StackScreenProps<any>) {
     }
 
     function handleLogout() {
-        //navigation.replace('Setup');
+        //;
         if(currentUser){
+            
             getuserbyusername(currentUser).then((user)=>{if(user){
                 return deleteUser(user.id)
             }
         else
         {
             Alert.alert("check username validation")
-        }})
+        }}).catch((err)=>Alert.alert(String(err)))
         }
+        navigation.replace('Setup')
     }
 
     function fitAll() {

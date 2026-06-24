@@ -53,12 +53,13 @@ export default function Setup({ navigation }: StackScreenProps<any>) {
         // }, 2000);
         setIsAuthenticating(true);
         getuserinfo(username).catch((err)=>{
-            if(axios.isAxiosError(err)&& err.response?.status==404)
+            if(axios.isAxiosError(err) && err.response?.status==404)
             {
                 return Promise.reject('Usernotfound')
             }
             else{
-                return Promise.reject(err);
+                Alert.alert('usertest');
+                return Promise.reject("404 gituserinfo not work");
             }
         }).then((gitout)=>{
             postUser({
@@ -68,7 +69,7 @@ export default function Setup({ navigation }: StackScreenProps<any>) {
                 company:gitout.company,
                 name:gitout.name,
                 coordinates:markerLocation,
-            })}).then(()=>{localgitusercontext?.setuser(username); navigation.replace('Main') }).catch((err)=>Alert.alert(err)).finally(()=>setIsAuthenticating(false))
+            })}).then(()=>{localgitusercontext?.setuser(username); navigation.replace('Main'); }).catch((err)=>Alert.alert(`${err} secondaryalery`)).finally(()=>{setIsAuthenticating(false)})
     }
 
     return (

@@ -1,11 +1,12 @@
 import axios from 'axios';
 import user from '../types/user'
 
-const api =axios.create({baseURL:'https://my-json.server.typicode.com/ceinsmic/assignment3mobile'});
+//alt: https://my-json.server.typicode.com/ceinsmic/assignment3mobile
+const api =axios.create({baseURL:'http://10.0.0.213:3333'});
 export function getUsers(){
     
     return(
-        api.get<user[]>('/uses/').then(({data})=>data)
+        api.get<user[]>('/users/').then(({data})=>data)
     );
 }
 
