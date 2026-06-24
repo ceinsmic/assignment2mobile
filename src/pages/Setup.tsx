@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { KeyboardAvoidingView, StyleSheet, TextInput, View } from 'react-native';
+import { KeyboardAvoidingView, StyleSheet, TextInput, View, Alert } from 'react-native';
 import MapView, { LatLng, MapPressEvent, Marker, PoiClickEvent, Region } from 'react-native-maps';
 import { DEFAULT_LOCATION, tryGetCurrentPosition } from '../utils/location';
 
@@ -7,11 +7,19 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
 import Spinner from 'react-native-loading-spinner-overlay';
 import BigButton from '../components/BigButton';
+import axios from 'axios';
+import { gitusercontexttype, gitusercontext } from '../CONTEXT/gitusercontext';
+import { getuserinfo } from '../Services/git';
+//import { RemovefromStorage, getFromNetworkFirst,getfromStorage } from '../Services/storage';
+import { getUsers, postUser,deleteUser,getuserbyusername } from '../Services/user';
+import { useContext } from 'react';
+//import usertype from '../types/user'
 
 export default function Setup({ navigation }: StackScreenProps<any>) {
     // TODO: use username to fetch user data from GitHub API and store it in the app state
     const [username, setUsername] = useState('');
-
+    //const gituser = useContext(gitusercontext)
+    const localgitusercontext = useContext(gitusercontext)
     const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
 
     const [markerLocation, setMarkerLocation] = useState<LatLng>(DEFAULT_LOCATION);
@@ -38,11 +46,29 @@ export default function Setup({ navigation }: StackScreenProps<any>) {
 
     function handleSignUp() {
         // TODO: handle sign up logic. For now, we'll just fake it.
+        // setIsAuthenticating(true);
+        // navigation.replace('Main');
+        // setTimeout(() => {
+        //     setIsAuthenticating(false);
+        // }, 2000);
         setIsAuthenticating(true);
-        navigation.replace('Main');
-        setTimeout(() => {
-            setIsAuthenticating(false);
-        }, 2000);
+        getuserinfo(username).catch((err)=>{
+            if(axios.isAxiosError(err)&& err.response?.status==404)
+            {
+                return Promise.reject('Usernotfound')
+            }
+            else{
+                return Promise.reject(err);
+            }
+        }).then((gitout)=>{
+            postUser({
+                login:gitout.login,
+                avatar_url:gitout.avatar_url,
+                bio:gitout.bio,
+                company:gitout.company,
+                name:gitout.name,
+                coordinates:markerLocation,
+            })}).then(()=>{localgitusercontext?.setuser(username); navigation.replace('Main') }).catch((err)=>Alert.alert(err)).finally(()=>setIsAuthenticating(false))
     }
 
     return (
@@ -91,8 +117,8 @@ const styles = StyleSheet.create({
     },
 
     map: {
-        ...StyleSheet.absoluteFillObject,
-    },
+        ...StyleSheet.absoluteFill,
+    },//was absoluteFillObject,
 
     form: {
         position: 'absolute',

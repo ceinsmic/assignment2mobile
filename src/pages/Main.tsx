@@ -1,26 +1,34 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View,Alert } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import MapView, { LatLng, Region } from 'react-native-maps';
 
-import db from '../../db.json';
+import db from '../../db.json';//for dummy data
 import UserMarker from '../components/UserMarker';
 import User from '../types/user';
 import { DEFAULT_LOCATION, tryGetCurrentPosition } from '../utils/location';
+import { gitusercontext,gitusercontexttype } from '../CONTEXT/gitusercontext';
+import { getuserinfo } from '../Services/git';
+import { RemovefromStorage, getFromNetworkFirst,getfromStorage } from '../Services/storage';
+import { getUsers, postUser,deleteUser,getuserbyusername } from '../Services/user';
+
 
 export default function Main({ navigation }: StackScreenProps<any>) {
+    const localgitusercontext =useContext(gitusercontext)
+    const currentUser=localgitusercontext?.user;
     const mapViewRef = useRef<MapView>(null);
-
     const [devs, setDevs] = useState<User[]>([]);
     const [userLocation, setUserLocation] = useState<LatLng>();
     const [currentRegion, setCurrentRegion] = useState<Region>();
 
     useEffect(() => {
         // TODO: fetch users from API. For now, we'll use a mock.
-        const users = db.users as User[];
-        setDevs(users);
+        // const users = db.users as User[];
+        // setDevs(users);
+        // 
+        getUsers().then(setDevs).catch((err)=>Alert.alert(String(err)))
         loadInitialPosition();
     }, []);
 
@@ -38,7 +46,16 @@ export default function Main({ navigation }: StackScreenProps<any>) {
     }
 
     function handleLogout() {
-        navigation.replace('Setup');
+        //navigation.replace('Setup');
+        if(currentUser){
+            getuserbyusername(currentUser).then((user)=>{if(user){
+                return deleteUser(user.id)
+            }
+        else
+        {
+            Alert.alert("check username validation")
+        }})
+        }
     }
 
     function fitAll() {

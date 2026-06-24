@@ -20,7 +20,7 @@ export default function Routes({ initialRouteName }: RoutesProps) {
                     headerMode: 'screen',
                     headerTintColor: 'white',
                     headerStyle: { backgroundColor: '#021A62' },
-                    headerBackTitleVisible: false,
+                    //headerBackTitleVisible: false,
                 }}
             >
                 <Screen
