@@ -130,6 +130,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#031A62',
         borderRadius: 4,
     },
+    map:{
+        ...StyleSheet.absoluteFill,
+    },
 
     buttonLabel: {
         color: 'white',
