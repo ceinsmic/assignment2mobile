@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Callout, Marker } from 'react-native-maps';
-
+import { gitusercontext,gitusercontexttype } from '../CONTEXT/gitusercontext';
 import db from '../../db.json';
 import User from '../types/user';
 
@@ -12,7 +12,8 @@ interface UserMarkerProps {
 
 export default function UserMarker({ data: user, handleCalloutPress }: UserMarkerProps) {
     // TODO: use context to get current user (let's just assume it's the first one for now)
-    const isCurrentUser = user.login === (db.users as any)[0].login;
+    const currentusercontext = useContext(gitusercontext)?.user;
+    const isCurrentUser = user.login === currentusercontext;
 
     return (
         <Marker key={user.id} coordinate={user.coordinates}>
