@@ -1,3 +1,5 @@
+# VERY IMPORTANT REQUIRES GOOGLE API ACCESS FOR MAPS
+
 # dev finder
 
 **dev finder** is a mobile app that helps developers find peers in a geographic area, fostering new projects, knowledge sharing and professional growth.
@@ -45,3 +47,4 @@ To use `my-json-server`, make sure your `db.json` is located at the repo root.
 ## Support
 
 Please see if your question or issue is already filed by searching in [current issues](https://github.com/bvc-mobile-dev/dev-finder/issues); if not, feel free to create a new one.
+
